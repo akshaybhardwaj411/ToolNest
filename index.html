@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7fc">
+  <meta name="description" content="ToolNest - Free online calculators, student tools and everyday utilities.">
+  <title>ToolNest - Smart Tools for Everyone</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Persistent Navigation -->
+  <header class="topbar">
+    <nav class="nav">
+      <a href="#home" class="logo" id="homeLogo">Tool<span>Nest.</span></a>
+
+      <div class="nav-right">
+        <button class="nav-link" id="toolsNav">Explore Tools</button>
+        <button class="nav-link" id="aboutNav">About</button>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">☾</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Homepage -->
+  <div id="homeView">
+
+    <section class="hero" id="hero">
+      <div class="hero-inner">
+        <div class="tag">✦ YOUR EVERYDAY DIGITAL TOOLKIT</div>
+        <h1>Smart tools.<br><span>Less effort.</span></h1>
+        <p>Everything you need, all in one place. Explore free tools designed to make everyday tasks simpler.</p>
+
+        <div class="search-wrap">
+          <span class="search-icon">⌕</span>
+          <input class="search" id="search"
+            type="search"
+            placeholder="Search calculators, converters, tools...">
+        </div>
+
+        <div class="stats">
+          <span>✦ Free to use</span>
+          <span>◈ No signup</span>
+          <span>✓ Mobile friendly</span>
+        </div>
+      </div>
+    </section>
+
+    <main class="container main">
+
+      <section id="toolsSection">
+        <div class="section-heading">
+          <div>
+            <h2>Explore tools</h2>
+            <p>Find the right tool for your everyday needs.</p>
+          </div>
+          <span class="count" id="count">6 tools</span>
+        </div>
+
+        <div class="categories" id="categories">
+          <button class="category active" data-category="All">All tools</button>
+          <button class="category" data-category="Calculators">Calculators</button>
+          <button class="category" data-category="Student">Student</button>
+          <button class="category" data-category="Finance">Finance</button>
+          <button class="category" data-category="Text">Text tools</button>
+          <button class="category" data-category="Date">Date & time</button>
+        </div>
+
+        <div class="tool-grid" id="toolGrid"></div>
+
+        <div class="empty" id="empty">
+          No matching tools found. Try another search.
+        </div>
+      </section>
+
+      <section class="why" id="aboutSection">
+        <h2>Tools that make life easier.</h2>
+        <p>ToolNest brings useful digital utilities together in one simple platform. No complicated setup, no unnecessary steps.</p>
+
+        <div class="features">
+          <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Simple & fast</h3>
+            <p>Get results without complicated steps.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🔒</div>
+            <h3>Privacy focused</h3>
+            <p>Basic tools process your inputs directly in your browser.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📱</div>
+            <h3>Works on mobile</h3>
+            <p>A responsive experience across screen sizes.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Individual Tool Workspace -->
+  <main class="container workspace" id="workspace" hidden>
+
+    <button class="back-btn" id="backBtn">
+      ← Back to all tools
+    </button>
+
+    <div class="workspace-heading">
+      <div class="eyebrow" id="toolCategory">TOOLNEST / TOOL</div>
+      <h1 id="workspaceTitle">Tool title</h1>
+      <p id="workspaceDescription">Tool description</p>
+    </div>
+
+    <div class="workspace-layout">
+
+      <div class="workspace-left">
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div class="tool-icon" id="workspaceIcon">✦</div>
+            <div>
+              <h3>Enter your details</h3>
+              <p>Fill in the information below.</p>
+            </div>
+          </div>
+
+          <div id="toolFields"></div>
+
+          <p class="hint">
+            Your inputs are processed locally in your browser.
+          </p>
+        </section>
+
+        <section class="quick-card">
+          <h4>✦ How it works</h4>
+          <p id="howItWorks"></p>
+        </section>
+
+      </div>
+
+      <div class="workspace-right">
+
+        <section class="panel">
+          <div class="panel-heading">
+            <div class="tool-icon">✨</div>
+            <div>
+              <h3>Your result</h3>
+              <p>Calculated just for you.</p>
+            </div>
+          </div>
+
+          <div id="resultContent" class="result-placeholder">
+            <div>
+              <span>✧</span>
+              Your result will appear here.
+              <br>Enter your details to get started.
+            </div>
+          </div>
+
+          <button class="btn btn-outline hidden" id="copyResult">
+            ▣ Copy result
+          </button>
+        </section>
+
+        <section class="quick-card">
+          <h4>🔒 Your privacy matters</h4>
+          <p>Your entries stay in your browser. This version does not send calculator inputs to a server.</p>
+        </section>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="logo">Tool<span>Nest.</span></div>
+    <p>Useful tools. A simpler digital life.</p>
+    <div class="footer-links">
+      <a href="#about" id="footerAbout">About</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <p>© 2026 ToolNest. All rights reserved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
