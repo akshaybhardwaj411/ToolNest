@@ -16,6 +16,8 @@ let lastCopy = "";
 ================================= */
 
 const tools = [
+
+  /* AGE CALCULATOR */
   {
     id: "age",
     name: "Age Calculator",
@@ -64,6 +66,100 @@ const tools = [
     }
   },
 
+  /* GST CALCULATOR */
+  {
+    id: "gst",
+    name: "GST Calculator",
+    icon: "🧾",
+    category: "Finance",
+    label: "FINANCE",
+    description: "Calculate GST, inclusive and exclusive prices with tax breakdown.",
+    short: "Calculate GST and final prices instantly.",
+    instructions: "Enter an amount, select GST rate, calculation mode and tax type.",
+    fields: `
+      <label class="field-label" for="gstAmount">Amount (₹)</label>
+      <input class="field" type="number" id="gstAmount" placeholder="e.g. 1000" min="0" step="0.01">
+
+      <label class="field-label" for="gstRate">GST rate</label>
+      <select class="field" id="gstRate">
+        <option value="5">5%</option>
+        <option value="12">12%</option>
+        <option value="18" selected>18%</option>
+        <option value="28">28%</option>
+      </select>
+
+      <label class="field-label" for="gstMode">Calculation mode</label>
+      <select class="field" id="gstMode">
+        <option value="exclusive">Add GST (Exclusive)</option>
+        <option value="inclusive">Remove GST (Inclusive)</option>
+      </select>
+
+      <label class="field-label" for="gstType">Tax type</label>
+      <select class="field" id="gstType">
+        <option value="intra">CGST + SGST</option>
+        <option value="inter">IGST</option>
+      </select>
+
+      <div class="action-row">
+        <button class="btn btn-primary" id="calculate">Calculate GST →</button>
+        <button class="btn btn-secondary" id="reset">Reset</button>
+      </div>
+    `,
+    calculate() {
+      const amountValue = $("gstAmount").value;
+      const amount = Number(amountValue);
+      const rate = Number($("gstRate").value);
+      const mode = $("gstMode").value;
+      const type = $("gstType").value;
+
+      if (
+        amountValue.trim() === "" ||
+        !Number.isFinite(amount) ||
+        amount <= 0
+      ) {
+        return error("Please enter a valid amount greater than zero.");
+      }
+
+      let base;
+      let gst;
+      let total;
+
+      if (mode === "exclusive") {
+        base = amount;
+        gst = base * rate / 100;
+        total = base + gst;
+      } else {
+        total = amount;
+        base = total / (1 + rate / 100);
+        gst = total - base;
+      }
+
+      const cgst = type === "intra" ? gst / 2 : 0;
+      const sgst = type === "intra" ? gst / 2 : 0;
+      const igst = type === "inter" ? gst : 0;
+
+      const money = value => "₹" + value.toFixed(2);
+
+      const breakdown = type === "intra"
+        ? `CGST (${rate / 2}%): ${money(cgst)} | SGST (${rate / 2}%): ${money(sgst)}`
+        : `IGST (${rate}%): ${money(igst)}`;
+
+      return {
+        main: money(total),
+        sub: `Base: ${money(base)} | GST: ${money(gst)} | ${breakdown}`,
+        copy: `GST Calculation
+Mode: ${mode}
+Tax type: ${type}
+GST rate: ${rate}%
+Base amount: ${money(base)}
+GST amount: ${money(gst)}
+${breakdown}
+Final amount: ${money(total)}`
+      };
+    }
+  },
+
+  /* PERCENTAGE CALCULATOR */
   {
     id: "percentage",
     name: "Percentage Calculator",
@@ -89,8 +185,13 @@ const tools = [
       const a = $("obtained").value;
       const b = $("total").value;
 
-      if (a === "" || b === "" || Number(b) <= 0 ||
-          Number(a) < 0 || Number(a) > Number(b)) {
+      if (
+        a === "" ||
+        b === "" ||
+        Number(b) <= 0 ||
+        Number(a) < 0 ||
+        Number(a) > Number(b)
+      ) {
         return error("Enter valid marks. Obtained marks cannot exceed total marks.");
       }
 
@@ -104,6 +205,7 @@ const tools = [
     }
   },
 
+  /* WORD COUNTER */
   {
     id: "words",
     name: "Word Counter",
@@ -150,6 +252,7 @@ const tools = [
     }
   },
 
+  /* DATE CALCULATOR */
   {
     id: "date",
     name: "Date Calculator",
@@ -189,6 +292,7 @@ const tools = [
     }
   },
 
+  /* BMI CALCULATOR */
   {
     id: "bmi",
     name: "BMI Calculator",
@@ -236,6 +340,7 @@ const tools = [
     }
   },
 
+  /* TEXT CASE CONVERTER */
   {
     id: "text",
     name: "Text Case Converter",
@@ -345,7 +450,6 @@ function showTool(id) {
   $("howItWorks").textContent = tool.instructions;
 
   resetResult();
-
   bindToolEvents(tool);
 
   window.scrollTo({ top: 0, behavior: "instant" });
@@ -374,6 +478,7 @@ function goBack() {
 }
 
 /* Browser / Android back button support */
+
 window.addEventListener("popstate", event => {
   const state = event.state;
 
@@ -416,6 +521,13 @@ function bindToolEvents(tool) {
 
     ids.forEach(id => {
       $(id).addEventListener("input", liveCalculate);
+    });
+  }
+
+  if (tool.id === "gst") {
+    ["gstAmount", "gstRate", "gstMode", "gstType"].forEach(id => {
+      $(id).addEventListener("input", liveCalculate);
+      $(id).addEventListener("change", liveCalculate);
     });
   }
 
@@ -477,9 +589,17 @@ function liveCalculate() {
   const tool = tools.find(item => item.id === activeTool);
   if (!tool || !tool.calculate) return;
 
-  const ids = activeTool === "percentage"
-    ? ["obtained", "total"]
-    : ["weight", "height"];
+  let ids;
+
+  if (activeTool === "percentage") {
+    ids = ["obtained", "total"];
+  } else if (activeTool === "bmi") {
+    ids = ["weight", "height"];
+  } else if (activeTool === "gst") {
+    ids = ["gstAmount"];
+  } else {
+    return;
+  }
 
   const filled = ids.every(id => $(id).value.trim() !== "");
 
@@ -492,6 +612,7 @@ function liveCalculate() {
 
 function updateWordStats() {
   const text = $("wordText").value;
+
   const words = text.trim()
     ? text.trim().split(/\s+/).length
     : 0;
@@ -512,6 +633,7 @@ function updateWordStats() {
 
   if (text.length) {
     $("resultContent").className = "result-panel";
+
     $("resultContent").innerHTML = `
       <div class="result-label">LIVE TEXT ANALYSIS</div>
       <div class="result-value">${words} words</div>
@@ -526,6 +648,7 @@ function updateWordStats() {
 
 function convertText(mode) {
   const input = $("caseText");
+
   const value = mode === "upper"
     ? input.value.toUpperCase()
     : input.value.toLowerCase();
@@ -542,7 +665,7 @@ function convertText(mode) {
 
 function resetTool() {
   $("toolFields")
-    .querySelectorAll("input, textarea")
+    .querySelectorAll("input, textarea, select")
     .forEach(field => field.value = "");
 
   resetResult();
@@ -553,6 +676,10 @@ function resetTool() {
     $("readTime").textContent = "0";
   }
 }
+
+/* =================================
+   HTML ESCAPE
+================================= */
 
 function escapeHTML(value) {
   return String(value).replace(/[&<>"']/g, char => ({
@@ -595,6 +722,7 @@ function filterTools() {
 
   document.querySelectorAll(".tool-card").forEach(card => {
     const nameMatch = card.dataset.name.includes(query);
+
     const categoryMatch =
       currentCategory === "All" ||
       card.dataset.category === currentCategory;
@@ -676,6 +804,7 @@ function openAbout() {
 }
 
 $("aboutNav").addEventListener("click", openAbout);
+
 $("footerAbout").addEventListener("click", event => {
   event.preventDefault();
   openAbout();
@@ -690,6 +819,7 @@ function init() {
 
   try {
     const savedTheme = localStorage.getItem("toolnest-theme");
+
     if (savedTheme === "dark" || savedTheme === "light") {
       setTheme(savedTheme);
     }
