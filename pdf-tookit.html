@@ -1,0 +1,439 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7fc">
+  <meta name="description" content="Free online PDF tools to merge, split, compress and convert PDF files.">
+  <title>PDF Toolkit - ToolNest</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .pdf-page {
+      max-width: 1050px;
+      margin: 45px auto;
+      padding: 0 20px 70px;
+    }
+
+    .pdf-hero {
+      text-align: center;
+      padding: 35px 10px;
+    }
+
+    .pdf-tag {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .pdf-hero h1 {
+      font: 700 38px 'Space Grotesk', sans-serif;
+      margin: 15px 0;
+    }
+
+    .pdf-hero h1 span {
+      color: var(--primary);
+    }
+
+    .pdf-hero p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+      max-width: 550px;
+      margin: auto;
+    }
+
+    .pdf-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .pdf-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 24px;
+    }
+
+    .pdf-card h3 {
+      font: 700 18px 'Space Grotesk', sans-serif;
+      margin-bottom: 8px;
+    }
+
+    .pdf-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .pdf-icon {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+
+    .pdf-status {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 6px 10px;
+      border-radius: 20px;
+      background: var(--background);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pdf-status.ready {
+      color: var(--primary);
+    }
+
+    .pdf-upload {
+      display: block;
+      width: 100%;
+      margin-top: 18px;
+      padding: 20px;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      background: var(--background);
+      color: var(--text);
+      text-align: center;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .pdf-upload input {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .pdf-file-list {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .pdf-file {
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .pdf-action {
+      width: 100%;
+      margin-top: 15px;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pdf-action:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .pdf-message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .pdf-message.show {
+      display: block;
+      background: var(--background);
+      border: 1px solid var(--border);
+    }
+
+    .pdf-message a {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .pdf-privacy {
+      margin-top: 30px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+    }
+
+    .pdf-privacy h3 {
+      margin-bottom: 8px;
+    }
+
+    .pdf-privacy p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    @media(max-width:600px) {
+      .pdf-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pdf-hero h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <nav class="nav">
+    <a href="index.html" class="logo">Tool<span>Nest.</span></a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">← Back to tools</a>
+    </div>
+  </nav>
+</header>
+
+<main class="pdf-page">
+
+  <section class="pdf-hero">
+    <div class="pdf-tag">TOOLNEST / PDF TOOLKIT</div>
+    <h1>Everything PDF.<br><span>One simple place.</span></h1>
+    <p>Merge, split, compress and convert your PDF files with simple browser-based tools.</p>
+  </section>
+
+  <section class="pdf-grid">
+
+    <!-- MERGE PDF -->
+    <article class="pdf-card">
+      <div class="pdf-icon">📚</div>
+      <h3>Merge PDF</h3>
+      <p>Combine multiple PDF files into one document.</p>
+      <span class="pdf-status ready">Available now</span>
+
+      <label class="pdf-upload">
+        Select PDF files
+        <input
+          type="file"
+          id="mergeFiles"
+          accept="application/pdf,.pdf"
+          multiple
+        >
+      </label>
+
+      <div class="pdf-file-list" id="fileList"></div>
+
+      <button class="pdf-action" id="mergeBtn" disabled>
+        Merge PDF files
+      </button>
+
+      <div class="pdf-message" id="mergeMessage" aria-live="polite"></div>
+    </article>
+
+    <!-- SPLIT PDF -->
+    <article class="pdf-card">
+      <div class="pdf-icon">✂️</div>
+      <h3>Split PDF</h3>
+      <p>Extract selected pages from your PDF document.</p>
+      <span class="pdf-status">Coming soon</span>
+    </article>
+
+    <!-- COMPRESS PDF -->
+    <article class="pdf-card">
+      <div class="pdf-icon">📦</div>
+      <h3>Compress PDF</h3>
+      <p>Reduce PDF file size with adjustable output quality.</p>
+      <span class="pdf-status">Coming soon</span>
+    </article>
+
+    <!-- IMAGES TO PDF -->
+    <article class="pdf-card">
+      <div class="pdf-icon">🖼️</div>
+      <h3>Images to PDF</h3>
+      <p>Convert JPG and PNG images into a PDF document.</p>
+      <span class="pdf-status">Coming soon</span>
+    </article>
+
+    <!-- PDF TO IMAGES -->
+    <article class="pdf-card">
+      <div class="pdf-icon">📄</div>
+      <h3>PDF to Images</h3>
+      <p>Convert PDF pages into downloadable images.</p>
+      <span class="pdf-status">Coming soon</span>
+    </article>
+
+  </section>
+
+  <section class="pdf-privacy">
+    <h3>🔒 Your files, your privacy</h3>
+    <p>
+      PDF files are processed locally in your browser.
+      They are not intentionally uploaded to our server.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <div class="logo">Tool<span>Nest.</span></div>
+  <p>Useful tools. A simpler digital life.</p>
+  <p>© 2026 ToolNest. All rights reserved.</p>
+</footer>
+
+<!-- PDF LIBRARY -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+
+<script>
+"use strict";
+
+const fileInput = document.getElementById("mergeFiles");
+const fileList = document.getElementById("fileList");
+const mergeBtn = document.getElementById("mergeBtn");
+const mergeMessage = document.getElementById("mergeMessage");
+
+let selectedFiles = [];
+
+function showMessage(message) {
+  mergeMessage.className = "pdf-message show";
+  mergeMessage.innerHTML = message;
+}
+
+function formatSize(bytes) {
+  return bytes < 1024 * 1024
+    ? (bytes / 1024).toFixed(1) + " KB"
+    : (bytes / (1024 * 1024)).toFixed(2) + " MB";
+}
+
+function renderFiles() {
+  fileList.innerHTML = "";
+
+  selectedFiles.forEach((file, index) => {
+    const item = document.createElement("div");
+    item.className = "pdf-file";
+    item.textContent =
+      (index + 1) + ". " + file.name + " (" + formatSize(file.size) + ")";
+
+    fileList.appendChild(item);
+  });
+
+  mergeBtn.disabled = selectedFiles.length < 2;
+
+  if (selectedFiles.length > 0) {
+    showMessage(
+      selectedFiles.length + " PDF file(s) selected. Select at least two to merge."
+    );
+  } else {
+    mergeMessage.className = "pdf-message";
+    mergeMessage.textContent = "";
+  }
+}
+
+fileInput.addEventListener("change", () => {
+  selectedFiles = Array.from(fileInput.files || []);
+
+  const invalidFile = selectedFiles.find(file =>
+    !file.name.toLowerCase().endsWith(".pdf")
+  );
+
+  if (invalidFile) {
+    selectedFiles = [];
+    fileInput.value = "";
+    renderFiles();
+    showMessage("Please select valid PDF files only.");
+    return;
+  }
+
+  renderFiles();
+});
+
+mergeBtn.addEventListener("click", async () => {
+  if (selectedFiles.length < 2) {
+    showMessage("Please select at least two PDF files.");
+    return;
+  }
+
+  if (!window.PDFLib) {
+    showMessage("PDF library could not load. Check your internet connection and refresh the page.");
+    return;
+  }
+
+  mergeBtn.disabled = true;
+  mergeBtn.textContent = "Merging PDFs...";
+
+  try {
+    const mergedPdf = await PDFLib.PDFDocument.create();
+
+    for (const file of selectedFiles) {
+      const bytes = await file.arrayBuffer();
+
+      const sourcePdf = await PDFLib.PDFDocument.load(bytes, {
+        ignoreEncryption: false
+      });
+
+      const pageIndices = sourcePdf.getPageIndices();
+
+      const copiedPages = await mergedPdf.copyPages(
+        sourcePdf,
+        pageIndices
+      );
+
+      copiedPages.forEach(page => mergedPdf.addPage(page));
+    }
+
+    const mergedBytes = await mergedPdf.save();
+
+    const blob = new Blob([mergedBytes], {
+      type: "application/pdf"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "ToolNest-Merged.pdf";
+    downloadLink.textContent = "Download merged PDF →";
+
+    mergeMessage.className = "pdf-message show";
+    mergeMessage.textContent = "PDF files merged successfully. ";
+
+    mergeMessage.appendChild(downloadLink);
+
+    mergeMessage.appendChild(
+      document.createElement("br")
+    );
+
+    const info = document.createElement("span");
+    info.textContent =
+      "Total pages: " + mergedPdf.getPageCount();
+
+    mergeMessage.appendChild(info);
+
+    downloadLink.addEventListener("click", () => {
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    showMessage(
+      "Unable to merge these files. Check that the PDFs are valid and not password protected."
+    );
+
+  } finally {
+    mergeBtn.disabled = selectedFiles.length < 2;
+    mergeBtn.textContent = "Merge PDF files";
+  }
+});
+</script>
+
+</body>
+</html>
